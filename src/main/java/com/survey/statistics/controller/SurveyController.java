@@ -4,26 +4,26 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.survey.statistics.model.csvdata.Survey;
-import com.survey.statistics.repository.SurveyRepository;
+import com.survey.statistics.service.SurveyService;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/api/test")
+@RequestMapping("/api/survey")
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-public class TestController {
+public class SurveyController {
 
-	private final SurveyRepository csvRepo;
-
-	@GetMapping
-	public List<Survey> findAllSurveys() {
-		return csvRepo.getAllSurveys();
+	private final SurveyService surveyService;
+	
+	@GetMapping("/completed-by-member/{memberId}")
+	public List<Survey> findAllSurveysCompletedByMember(@PathVariable("memberId") Long memberId) {
+		return surveyService.findAllCompletedByMember(memberId);
 	}
-
-
+	
 }

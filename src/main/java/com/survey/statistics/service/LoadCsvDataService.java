@@ -2,11 +2,11 @@ package com.survey.statistics.service;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.map.MultiKeyMap;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +25,8 @@ public class LoadCsvDataService {
 	private Map<Long, Survey> surveysMap;
 	private Map<Long, Member> membersMap;
 	private Map<Long, Status> statusesMap;
-	/**
-	 * firstKey: membersId
-	 * secoundKey: surveyId
-	 * thirdKey: statusId
-	 */
-	private MultiKeyMap participationMap;
+
+	private List<Participation> participationList;
 	
     @Value("${csv.survey.file:static/Survey.csv}")
     private String surveyFile;
@@ -51,7 +47,7 @@ public class LoadCsvDataService {
 		surveysMap = new HashMap<>();
 		membersMap = new HashMap<>();
 		statusesMap = new HashMap<>();
-		participationMap = new MultiKeyMap();
+		participationList = new ArrayList<>();
 		
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 		
@@ -79,9 +75,9 @@ public class LoadCsvDataService {
 	
 	private void readPartitipations(ClassLoader classloader) {
 		List<Participation> partitipations = loadCsvData(participationFile, classloader, Participation.class);
-		
-		partitipations.forEach(p -> participationMap
-				.put(p.getMemberId(), p.getSurveyId(), p.getStatusId(), p));
+		this.participationList = partitipations;
+//		partitipations.forEach(p -> participationMap
+//				.put(p.getMemberId(), p));
 		
 		log.info("Participations successfully loaded. size: {}", partitipations.size());
 	}
@@ -123,8 +119,8 @@ public class LoadCsvDataService {
 	 * <b>secoundKey:</b> surveyId <br>
 	 * <b>thirdKey:</b> statusId <br>
 	 */
-	public MultiKeyMap getParticipationMap() {
-		return participationMap;
+	public List<Participation> getParticipations() {
+		return participationList;
 	}
 
 }
