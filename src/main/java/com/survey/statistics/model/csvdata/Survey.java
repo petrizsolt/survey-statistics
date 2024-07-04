@@ -5,8 +5,8 @@ import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
+@Data
 public class Survey {
 	
 	@CsvBindByName(column = "Survey Id")
