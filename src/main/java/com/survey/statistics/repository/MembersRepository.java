@@ -8,5 +8,6 @@ import com.survey.statistics.model.csvdata.Member;
 public interface MembersRepository {
 	
 	List<Member> findAllMemberIdIn(Set<Long> ids);
+	List<Member> findAllMembersActive();
 
 }
