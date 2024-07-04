@@ -27,4 +27,10 @@ public class MembersController {
 	public List<Member> findAllSurveysCompletedBySurveyId(@PathVariable("surveyId") Long surveyId) {
 		return membersService.findAllSurveysCompletedBySurveyId(surveyId);
 	}
+	
+	@Operation(summary = "Task 2/d.")
+	@GetMapping("/ready-to-survey")
+	public List<Member> findAllMembersReadyToSurvey() {
+		return membersService.findAllUsersActiveReadyToSurvey();
+	}
 }

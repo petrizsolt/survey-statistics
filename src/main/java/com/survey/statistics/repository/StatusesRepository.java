@@ -7,5 +7,5 @@ import com.survey.statistics.model.csvdata.Status;
 public interface StatusesRepository {
 	
 	Optional<Status> findByName(String name);
-
+	
 }

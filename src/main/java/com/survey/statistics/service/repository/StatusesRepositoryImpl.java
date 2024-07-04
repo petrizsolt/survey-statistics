@@ -23,5 +23,4 @@ public class StatusesRepositoryImpl implements StatusesRepository {
 				.filter(s -> s.getName().equals(name))
 				.findFirst();
 	}
-
 }

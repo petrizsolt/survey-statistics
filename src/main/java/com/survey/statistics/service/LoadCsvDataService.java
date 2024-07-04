@@ -76,8 +76,6 @@ public class LoadCsvDataService {
 	private void readPartitipations(ClassLoader classloader) {
 		List<Participation> partitipations = loadCsvData(participationFile, classloader, Participation.class);
 		this.participationList = partitipations;
-//		partitipations.forEach(p -> participationMap
-//				.put(p.getMemberId(), p));
 		
 		log.info("Participations successfully loaded. size: {}", partitipations.size());
 	}

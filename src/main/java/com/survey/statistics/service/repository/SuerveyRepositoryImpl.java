@@ -29,5 +29,11 @@ public class SuerveyRepositoryImpl implements SurveyRepository {
 		
 		return surveys;
 	}
+	
+	@Override
+	public long totalSurveys() {
+		return csvLoader.getSurveysMap().values()
+				.stream().count();
+	}
 
 }

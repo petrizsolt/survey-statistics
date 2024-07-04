@@ -37,4 +37,12 @@ public class PartitipationRepositoryImpl implements ParticipationRepository {
 		return participations;
 	}
 
+	@Override
+	public long countMemberParticipationByStatuses(Long memberId, List<Long> statusIds) {
+		return csvService.getParticipations().stream()
+			.filter(p-> p.getMemberId().equals(memberId))
+			.filter(p -> statusIds.contains(p.getStatusId()))
+			.count();
+	}
+
 }

@@ -27,4 +27,12 @@ public class MembersRepositoryImpl implements MembersRepository {
 		return members;
 	}
 
+	@Override
+	public List<Member> findAllMembersActive() {
+		return csvService.getMembersMap().values()
+			.stream()
+			.filter(m -> Boolean.TRUE.equals(m.getIsActive()))
+			.toList();
+	}
+
 }
