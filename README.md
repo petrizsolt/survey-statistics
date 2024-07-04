@@ -1,6 +1,7 @@
 # survey-statistics
 
-run application:
+<strong>run application:</strong>
 	docker-compose up -d
-swagger-url: 
+ </br></br>
+<strong>swagger-url:</strong>
 	http://localhost:8080/swagger-ui/index.html
