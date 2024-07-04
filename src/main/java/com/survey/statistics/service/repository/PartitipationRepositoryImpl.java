@@ -27,4 +27,14 @@ public class PartitipationRepositoryImpl implements ParticipationRepository {
 		return participations;
 	}
 
+	@Override
+	public List<Participation> findAllBySurveyIdAndStatusId(Long surveyId, Long statusId) {
+		List<Participation> participations = csvService.getParticipations()
+				.stream()
+				.filter(p -> p.getSurveyId().equals(surveyId))
+				.filter(p -> p.getStatusId().equals(statusId))
+				.toList();
+		return participations;
+	}
+
 }

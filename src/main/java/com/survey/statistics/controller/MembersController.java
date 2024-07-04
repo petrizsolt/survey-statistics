@@ -8,24 +8,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.survey.statistics.model.csvdata.Survey;
-import com.survey.statistics.service.SurveyService;
+import com.survey.statistics.model.csvdata.Member;
+import com.survey.statistics.service.MembersService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/api/survey")
+@RequestMapping("/api/members")
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-public class SurveyController {
-
-	private final SurveyService surveyService;
+public class MembersController {
 	
-	@Operation(summary = "Task 2/b.")
-	@GetMapping("/completed-by-member/{memberId}")
-	public List<Survey> findAllSurveysCompletedByMember(@PathVariable("memberId") Long memberId) {
-		return surveyService.findAllCompletedByMember(memberId);
+	private final MembersService membersService;
+	
+	@Operation(summary = "Task 2/a.")
+	@GetMapping("/completed-by-surveyId/{surveyId}")
+	public List<Member> findAllSurveysCompletedBySurveyId(@PathVariable("surveyId") Long surveyId) {
+		return membersService.findAllSurveysCompletedBySurveyId(surveyId);
 	}
-	
 }

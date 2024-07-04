@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
+import com.survey.statistics.model.StatusNames;
 import com.survey.statistics.model.csvdata.Status;
 import com.survey.statistics.model.csvdata.Survey;
 import com.survey.statistics.repository.ParticipationRepository;
@@ -23,10 +24,8 @@ public class SurveyService {
 	private final StatusesRepository statusesRepo;
 	private final SurveyRepository surveyRepo;
 	
-	private static final String STATUS_COMPLETED = "Completed";
-	
 	public List<Survey> findAllCompletedByMember(Long memberId) {
-		Status status = statusesRepo.findByName(STATUS_COMPLETED)
+		Status status = statusesRepo.findByName(StatusNames.COMPLETED.getValue())
 				.orElseThrow(() -> new NoSuchElementException("Status not found!"));
 		
 		List<Long> surveyIds =  
