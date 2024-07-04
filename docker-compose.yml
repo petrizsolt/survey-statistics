@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  survey-statistics:
+    build:
+      context: .
+    container_name: survey-statistics
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
