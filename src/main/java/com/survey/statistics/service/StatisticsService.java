@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.survey.statistics.model.MemberPointsResponse;
 import com.survey.statistics.model.StatusNames;
+import com.survey.statistics.model.SurveyStatisticsResponse;
+import com.survey.statistics.model.csvdata.Participation;
 import com.survey.statistics.model.csvdata.Status;
 import com.survey.statistics.model.csvdata.Survey;
 import com.survey.statistics.repository.ParticipationRepository;
@@ -15,7 +17,9 @@ import com.survey.statistics.repository.StatusesRepository;
 import com.survey.statistics.repository.SurveyRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StatisticsService {
@@ -37,6 +41,58 @@ public class StatisticsService {
 		
 		return memberPoints;
 	}
+	
+	public List<SurveyStatisticsResponse> calculateSurveyStatistics() {
+		List<Survey> surveys = surveysRepo.getAllSurveys();
+		List<SurveyStatisticsResponse> stats = new ArrayList<>();
+		
+		surveys.forEach(s -> stats.add(statsBySurveyId(s.getId(), s.getName())));
+		
+		return stats;
+	}
+	
+	private SurveyStatisticsResponse statsBySurveyId(Long surveyId, String surveyName) {
+		SurveyStatisticsResponse resp = new SurveyStatisticsResponse();
+		resp.setSurveyId(surveyId);
+		resp.setSurveyName(surveyName);
+		List<Participation> surveyParticipations = participationRepo.findAllBySurveyId(surveyId);
+		
+		long completed = countParticipationByStatus(surveyParticipations, StatusNames.COMPLETED);
+		long filtered = countParticipationByStatus(surveyParticipations, StatusNames.FILTERED);
+		long rejected = countParticipationByStatus(surveyParticipations, StatusNames.REJECTED);
+		long notAsked = countParticipationByStatus(surveyParticipations, StatusNames.NOT_ASKED);
+		
+		resp.setCompleted(completed);
+		resp.setFiltered(filtered);
+		resp.setRejected(rejected);
+		resp.setNotAsked(notAsked);
+		
+		int totalSurveyTime = surveyParticipations.stream()
+				.mapToInt(p -> p.getLength() == null ? 0 : p.getLength())
+				.sum();
+		
+		log.info("Survey ({}) total survey time: {}", surveyId, totalSurveyTime);
+		
+		int totalSurveyParticipation = surveyParticipations.size();
+		
+		log.info("Survey ({}) total survey participations: {}", surveyId, totalSurveyParticipation);
+		
+		double avarageTime = totalSurveyTime / totalSurveyParticipation;
+		
+		resp.setAvarageSurveyTime(avarageTime);
+		
+		return resp;
+	}
+
+	private long countParticipationByStatus(List<Participation> surveyParticipations, StatusNames statusName) {
+		Status status = statusesRepo.findByName(statusName.getValue())
+				.orElseThrow(() -> new NoSuchElementException("Status not found!"));
+		
+		return surveyParticipations.stream()
+				.filter(p -> p.getStatusId().equals(status.getId()))
+				.count();
+	}
+	
 	
 	private List<MemberPointsResponse> calculateMemberPointsByStatus(Long memberId, Status status) {
 		List<MemberPointsResponse> memberPoints = new ArrayList<>();
