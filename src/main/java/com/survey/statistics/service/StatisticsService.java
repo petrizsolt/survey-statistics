@@ -73,7 +73,9 @@ public class StatisticsService {
 		
 		log.info("Survey ({}) total survey time: {}", surveyId, totalSurveyTime);
 		
-		int totalSurveyParticipation = surveyParticipations.size();
+		int totalSurveyParticipation = surveyParticipations
+				.stream()
+				.filter(s -> s.getLength() != null).toList().size();
 		
 		log.info("Survey ({}) total survey participations: {}", surveyId, totalSurveyParticipation);
 		
