@@ -69,7 +69,7 @@ public class StatisticsServiceTests {
 		
 		List<SurveyStatisticsResponse> expected = new ArrayList<>();
 		SurveyStatisticsResponse expectedValue = new SurveyStatisticsResponse();
-		expectedValue.setAvarageSurveyTime(5D);
+		expectedValue.setAverageSurveyTime(5D);
 		expectedValue.setCompleted(1L);
 		expectedValue.setFiltered(1L);
 		expectedValue.setNotAsked(0L);

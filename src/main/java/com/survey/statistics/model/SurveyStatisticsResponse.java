@@ -14,5 +14,5 @@ public class SurveyStatisticsResponse {
 	private Long filtered;
 	private Long rejected;
 	private Long notAsked;
-	private Double avarageSurveyTime;
+	private Double averageSurveyTime;
 }

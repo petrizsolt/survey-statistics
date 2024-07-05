@@ -79,9 +79,9 @@ public class StatisticsService {
 		
 		log.info("Survey ({}) total survey participations: {}", surveyId, totalSurveyParticipation);
 		
-		double avarageTime = totalSurveyTime / totalSurveyParticipation;
+		double averageTime = Double.valueOf(totalSurveyTime) / totalSurveyParticipation;
 		
-		resp.setAvarageSurveyTime(avarageTime);
+		resp.setAverageSurveyTime(averageTime);
 		
 		return resp;
 	}
