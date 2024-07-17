@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 
 import com.survey.statistics.model.StatusNames;
 import com.survey.statistics.model.csvdata.Member;
+import com.survey.statistics.model.csvdata.Participation;
 import com.survey.statistics.model.csvdata.Status;
 import com.survey.statistics.repository.MembersRepository;
 import com.survey.statistics.repository.ParticipationRepository;
 import com.survey.statistics.repository.StatusesRepository;
 import com.survey.statistics.repository.SurveyRepository;
+import com.survey.statistics.service.repository.PartitipationRepositoryImpl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,5 +76,25 @@ public class MembersService {
 		participatedStatuses.add(statusCompleted.getId());
 		participatedStatuses.add(statusFiltered.getId());
 		return participatedStatuses;
+	}
+
+	public List<Member> findAllMembersReadyToSurveyBySurveyId(Long surveyId) {
+		List<Participation> participations = participationRepo.findAllBySurveyId(surveyId);
+		List<Long> representedParticipationStatuses = getParticipatedStatuses();
+		Set<Long> representedMemberIds = new HashSet<>();
+		
+		for(Participation p: participations) {
+			if(representedParticipationStatuses.contains(p.getStatusId())) {
+				representedMemberIds.add(p.getMemberId());
+			}
+		}
+		
+		List<Member> activeMembers =  membersRepo.findAllMembersActive();
+		
+		// if member not represented in this survey, ready to complete this survey
+		return activeMembers.stream()
+			.filter(m -> !representedMemberIds.contains(m.getId()))
+			.toList();
+
 	}
 }

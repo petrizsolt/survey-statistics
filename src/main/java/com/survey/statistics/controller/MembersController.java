@@ -33,4 +33,10 @@ public class MembersController {
 	public List<Member> findAllMembersReadyToSurvey() {
 		return membersService.findAllUsersActiveReadyToSurvey();
 	}
+	
+	@Operation(summary = "Task 2/d. fix (by survey id)")
+	@GetMapping("/ready-to-survey-by-survey/{surveyId}")
+	public List<Member> findAllMembersReadyToSurveyBySurveyId(@PathVariable("surveyId") Long surveyId) {
+		return membersService.findAllMembersReadyToSurveyBySurveyId(surveyId);
+	}
 }
